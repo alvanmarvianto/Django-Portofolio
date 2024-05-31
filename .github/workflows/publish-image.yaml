@@ -1,0 +1,20 @@
+name: Publish Docker image
+
+on:
+  [workflow_dispatch]
+
+jobs:
+  publish_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Build
+        run : |
+          docker build . -t alvanm/django-portfolio:latest
+
+      - name: publish
+        run: |
+          docker login -u alvanm -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push alvanm/django-portfolio:latest
